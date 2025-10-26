@@ -1,0 +1,7 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from keras.datasets import mnist
+from keras.models import Model
+from keras.layers import Input, Dense
+from keras.optimizers import Adam
+from sklearn.manifold import TSNE
