@@ -1,0 +1,20 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import torch, torchaudio
+from transformers import AutoProcessor, MusicgenForConditionalGeneration
+
+MODEL = 'facebook/musicgen-small'
+processor = AutoProcessor.from_pretrained(MODEL)
+model = MusicgenForConditionalGeneration.from_pretrained(MODEL)
+
+prompt = "Dark academia music theme with piano and violin inspired by Beethovan's Moonlight Sonata"
+inputs = processor(text = [prompt], return_tensors = "pt")
+model.generation_config.do_sample = True
+model.generation_config.guidance_scale = 3.0  # creativity vs. prompt adhere
+model.generation_config.max_new_tokens = 50 * 18
+
+audio = model.generate(**inputs)  # (1, channels samples)
+sr = model.config.audio_encoder.sampling_rate
+torchaudio.save("text_music.wav", audio[0].cpu(), sr)
+print("Saved text_music.wav")
