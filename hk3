@@ -1,0 +1,27 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import torch
+
+!pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+!pip install diffusers
+!pip install transformers
+!pip install accelerate
+!pip install pillow
+!pip install safetensors
+
+from diffusers import StableDiffusionPipeline
+
+# Defining the model
+model = StableDiffusionPipeline.from_pretrained('CompVis/stable-diffusion-v1-4').to('cuda')
+prompt = "A beautiful painting in the style of Van Gogh"
+image = model(prompt)[0]
+plt.imshow(np.array(image).squeeze())
+plt.axis('off')
+plt.show()
+
+prompt = "A beautiful painting in the style of M F hussain"
+image = model(prompt)[0]
+plt.imshow(np.array(image).squeeze())
+plt.axis('off') # Hide axes
+plt.show()
